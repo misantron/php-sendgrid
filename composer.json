@@ -1,0 +1,22 @@
+{
+    "name": "misantron/sendgrid-api",
+    "description": "SendGrid API PHP client",
+    "keywords": [ "sendgrid", "api", "php" ],
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0"
+    },
+    "autoload": {
+        "psr-4": { "Misantron\\SendGrid\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Misantron\\SendGrid\\Tests\\": "tests/" }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}

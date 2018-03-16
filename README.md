@@ -1,2 +1,1 @@
-# php-sendgrid
-SendGrid API interface
+# SendGrid API PHP interface
