@@ -15,17 +15,12 @@ use Psr\Http\Message\RequestInterface;
  */
 class Client
 {
-    private const ENDPOINT = 'https://api.sendgrid.com/';
+    private const ENDPOINT = 'https://api.sendgrid.com';
 
     /**
      * @var ClientInterface
      */
     protected $transport;
-
-    /**
-     * @var string
-     */
-    private $version;
 
     /**
      * @var string
@@ -38,13 +33,11 @@ class Client
     public function __construct(array $config = [])
     {
         $this->key = $config['key'] ?? getenv('SENDGRID_KEY');
-        $this->version = $config['version'] ?? 'v3';
-
         if (empty($this->key)) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('API key is not defined');
         }
 
-        $this->transport = $this->createTransport();
+        $this->transport = $this->createTransport($config['version'] ?? 'v3');
     }
 
     public function request(string $method, string $uri, array $options = []): Response
@@ -61,9 +54,10 @@ class Client
     }
 
     /**
+     * @param string $version
      * @return ClientInterface
      */
-    private function createTransport(): ClientInterface
+    private function createTransport(string $version): ClientInterface
     {
         $handlerStack = HandlerStack::create();
         $handlerStack->push(
@@ -74,9 +68,11 @@ class Client
             })
         );
 
-        return new \GuzzleHttp\Client([
-            'base_uri' => self::ENDPOINT,
+        $configuration = [
+            'base_uri' => sprintf('%s/%s/', self::ENDPOINT, $version),
             'handler' => $handlerStack,
-        ]);
+        ];
+
+        return new \GuzzleHttp\Client($configuration);
     }
 }

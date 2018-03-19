@@ -4,14 +4,14 @@ namespace Misantron\SendGrid;
 
 
 use Misantron\SendGrid\Api\Client;
-use Misantron\SendGrid\Resource\Resource;
-use Misantron\SendGrid\Resource\Mail;
+use Misantron\SendGrid\Resource;
 
 /**
  * Class SendGrid
  * @package Misantron\SendGrid
  *
- * @method Mail mail()
+ * @method Resource\Mail mail()
+ * @method Resource\ApiKeys apiKeys()
  */
 class SendGrid
 {
@@ -29,13 +29,26 @@ class SendGrid
     }
 
     /**
+     * @param string $key
+     * @return SendGrid
+     */
+    public static function create(string $key): SendGrid
+    {
+        return new static(['key' => $key]);
+    }
+
+    /**
      * @param string $name
      * @param array|null $arguments
-     * @return Resource
+     * @return Resource\Resource
      */
-    public function __call(string $name, $arguments = null): Resource
+    public function __call(string $name, $arguments = null): Resource\Resource
     {
         $resource = __NAMESPACE__ . '\\Resource\\' . ucfirst($name);
+
+        if (!class_exists($resource)) {
+            throw new \InvalidArgumentException('Unknown API resource');
+        }
 
         return new $resource($this->client);
     }

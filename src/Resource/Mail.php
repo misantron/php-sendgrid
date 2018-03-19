@@ -11,11 +11,22 @@ use Misantron\SendGrid\Api\Response;
  */
 class Mail extends Resource
 {
+    /**
+     * @return string
+     */
+    protected function basePath(): string
+    {
+        return 'mail';
+    }
+
+    /**
+     * @param array $settings
+     * @return Response
+     */
     public function send(array $settings): Response
     {
-        $uri = $this->uri('mail/send');
         $options = ['json' => $settings];
 
-        return $this->client->request('post', $uri, $options);
+        return $this->client->request('post', $this->basePath() . '/send', $options);
     }
 }

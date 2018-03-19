@@ -17,28 +17,17 @@ abstract class Resource
     protected $client;
 
     /**
-     * @var string
-     */
-    private $version;
-
-    /**
      * @param Client $client
-     * @param string $version
      */
-    public function __construct(Client $client, string $version)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->version = $version;
     }
 
     /**
-     * @param string $path
      * @return string
      */
-    protected function uri(string $path): string
-    {
-        return sprintf('%s/%s', $this->version, $path);
-    }
+    abstract protected function basePath(): string;
 
     /**
      * @param array $data

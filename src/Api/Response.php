@@ -30,6 +30,9 @@ class Response
         $this->data = $this->getDataFromResponse($origin);
     }
 
+    /**
+     * @return array
+     */
     public function getData(): array
     {
         return $this->data;
