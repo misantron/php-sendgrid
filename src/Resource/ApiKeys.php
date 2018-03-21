@@ -50,6 +50,14 @@ class ApiKeys extends Resource
      */
     public function create(array $data): Response
     {
+        $this->getResolver()
+            ->setRequired(['name'])
+            ->setDefined(['scopes', 'sample'])
+            ->setAllowedTypes('name', 'string')
+            ->setAllowedTypes('scopes', 'string[]')
+            ->setAllowedTypes('sample', 'string')
+            ->resolve($data);
+
         $options = ['json' => $data];
 
         return $this->client->request('post', $this->basePath(), $options);
@@ -74,6 +82,12 @@ class ApiKeys extends Resource
      */
     public function update(string $id, array $data): Response
     {
+        $this->getResolver()
+            ->setDefined(['name', 'scopes'])
+            ->setAllowedTypes('name', 'string')
+            ->setAllowedTypes('scopes', 'string[]')
+            ->resolve($data);
+
         $options = ['json' => $data];
 
         return $this->client->request('put', $this->basePath() . '/' . $id, $options);

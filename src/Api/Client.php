@@ -32,14 +32,20 @@ class Client
      */
     public function __construct(array $config = [])
     {
-        $this->key = $config['key'] ?? getenv('SENDGRID_KEY');
+        $this->key = $config['key'];
         if (empty($this->key)) {
             throw new \InvalidArgumentException('API key is not defined');
         }
 
-        $this->transport = $this->createTransport($config['version'] ?? 'v3');
+        $this->transport = $this->createTransport($config);
     }
 
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     * @return Response
+     */
     public function request(string $method, string $uri, array $options = []): Response
     {
         try {
@@ -54,10 +60,10 @@ class Client
     }
 
     /**
-     * @param string $version
+     * @param array $config
      * @return ClientInterface
      */
-    private function createTransport(string $version): ClientInterface
+    private function createTransport(array $config): ClientInterface
     {
         $handlerStack = HandlerStack::create();
         $handlerStack->push(
@@ -69,7 +75,7 @@ class Client
         );
 
         $configuration = [
-            'base_uri' => sprintf('%s/%s/', self::ENDPOINT, $version),
+            'base_uri' => sprintf('%s/%s/', self::ENDPOINT, $config['version']),
             'handler' => $handlerStack,
         ];
 

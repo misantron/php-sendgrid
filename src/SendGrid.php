@@ -5,6 +5,7 @@ namespace Misantron\SendGrid;
 
 use Misantron\SendGrid\Api\Client;
 use Misantron\SendGrid\Resource;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class SendGrid
@@ -25,6 +26,14 @@ class SendGrid
      */
     public function __construct(array $config = [])
     {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            'key' => getenv('SENDGRID_KEY'),
+            'version' => 'v3'
+        ]);
+
+        $config = $resolver->resolve($config);
+
         $this->client = new Client($config);
     }
 

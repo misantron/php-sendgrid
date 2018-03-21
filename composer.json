@@ -4,7 +4,8 @@
     "keywords": [ "sendgrid", "api", "php" ],
     "license": "MIT",
     "require": {
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "symfony/options-resolver": "~4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0"
