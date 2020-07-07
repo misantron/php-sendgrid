@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Misantron\SendGrid\Resource;
 
-
+use GuzzleHttp\RequestOptions;
 use Misantron\SendGrid\Api\Response;
 
 /**
@@ -27,7 +29,7 @@ class ApiKeys extends Resource
     {
         $options = [];
         if ($limit > 0) {
-            $options['query'] = $this->query([
+            $options[RequestOptions::QUERY] = $this->query([
                 'limit' => $limit
             ]);
         }
@@ -58,7 +60,7 @@ class ApiKeys extends Resource
             ->setAllowedTypes('sample', 'string')
             ->resolve($data);
 
-        $options = ['json' => $data];
+        $options = [RequestOptions::JSON => $data];
 
         return $this->client->request('post', $this->basePath(), $options);
     }
@@ -70,7 +72,7 @@ class ApiKeys extends Resource
      */
     public function updateName(string $id, string $name): Response
     {
-        $options = ['json' => ['name' => $name]];
+        $options = [RequestOptions::JSON => ['name' => $name]];
 
         return $this->client->request('patch', $this->basePath() . '/' . $id, $options);
     }
@@ -88,7 +90,7 @@ class ApiKeys extends Resource
             ->setAllowedTypes('scopes', 'string[]')
             ->resolve($data);
 
-        $options = ['json' => $data];
+        $options = [RequestOptions::JSON => $data];
 
         return $this->client->request('put', $this->basePath() . '/' . $id, $options);
     }

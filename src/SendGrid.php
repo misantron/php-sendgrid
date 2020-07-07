@@ -1,7 +1,8 @@
 <?php
 
-namespace Misantron\SendGrid;
+declare(strict_types=1);
 
+namespace Misantron\SendGrid;
 
 use Misantron\SendGrid\Api\Client;
 use Misantron\SendGrid\Resource;

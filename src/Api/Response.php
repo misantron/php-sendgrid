@@ -1,7 +1,8 @@
 <?php
 
-namespace Misantron\SendGrid\Api;
+declare(strict_types=1);
 
+namespace Misantron\SendGrid\Api;
 
 use Psr\Http\Message\ResponseInterface;
 
@@ -12,11 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 class Response
 {
     /**
-     * @var ResponseInterface
-     */
-    private $origin;
-
-    /**
      * @var array
      */
     private $data;
@@ -26,7 +22,6 @@ class Response
      */
     public function __construct(ResponseInterface $origin)
     {
-        $this->origin = $origin;
         $this->data = $this->getDataFromResponse($origin);
     }
 

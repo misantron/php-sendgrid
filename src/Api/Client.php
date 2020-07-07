@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Misantron\SendGrid\Api;
 
-
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Psr\Http\Message\RequestInterface;
@@ -27,9 +28,6 @@ class Client
      */
     private $key;
 
-    /**
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         $this->key = $config['key'];
@@ -50,13 +48,13 @@ class Client
     {
         try {
             $response = $this->transport->request($method, $uri, $options);
-            return new Response($response);
-        } catch (BadResponseException $e) {
+        } catch (RequestException $e) {
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
 
         }
 
+        return new Response($response);
     }
 
     /**
